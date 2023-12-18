@@ -1,0 +1,55 @@
+﻿@using BlazorWASM_i18nByUrl.Shared.ResourceFiles
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Resource> localizer
+@inject IJSRuntime JS
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">@localizer["Menu_Name"]</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="@("/"+langParamater)" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> @localizer["Home"]
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="@("counter/"+langParamater)">
+                <span class="oi oi-plus" aria-hidden="true"></span> @localizer["Counter"]
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="@("fetchdata/"+langParamater)">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Fetch data"]
+            </NavLink>
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    string langParamater = "";
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var lang = await JS.InvokeAsync<string>("GetLangString");
+            if(!string.IsNullOrEmpty(lang)){
+                langParamater = $"?{lang}";
+            }
+        }
+    }
+}
