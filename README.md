@@ -5,4 +5,4 @@
 > <br>透過lang參數設定語系，重整頁面後生效，其他頁面會因應語言設定在route加入對應參數。
 
 
-筆記：[Url設定多國語系 流程說明](https://hackmd.io/@Airethz/H1bLS1dWj)
+筆記：[URL設定多國語系 流程說明](https://hackmd.io/@Airethz/H1bLS1dWj)
